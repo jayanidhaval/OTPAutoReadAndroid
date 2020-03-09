@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">OTPAutoRead</string>
+    <string name="request_for_otp">Request For OTP</string>
+</resources>
