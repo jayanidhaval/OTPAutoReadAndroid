@@ -1,5 +1,6 @@
 package com.dhaval.otpautoread.activities;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.dhaval.otpautoread.R;
 import com.dhaval.otpautoread.app.App;
 import com.dhaval.otpautoread.interfaces.OtpReceivedInterface;
+import com.dhaval.otpautoread.receiver.SmsBroadcastReceiver;
 import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements OtpReceivedInterf
 
     private Pinview pinview;
     private Button buttonRequestForOTP;
+    SmsBroadcastReceiver mSmsBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements OtpReceivedInterf
         pinview = findViewById(R.id.pinview);
         buttonRequestForOTP = findViewById(R.id.buttonRequestForOTP);
         buttonRequestForOTP.setOnClickListener(this);
+
+        mSmsBroadcastReceiver = new SmsBroadcastReceiver();
+        mSmsBroadcastReceiver.setOnOtpListeners(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
+        getApplicationContext().registerReceiver(mSmsBroadcastReceiver, intentFilter);
     }
 
     @Override
